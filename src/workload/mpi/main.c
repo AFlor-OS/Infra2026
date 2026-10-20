@@ -1,8 +1,11 @@
+#define _POSIX_C_SOURCE 199309L
+
 #include "matrix.h"
 #include <mpi.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 
 int main(int argc, char **argv) {
     MPI_Init(&argc, &argv);
@@ -10,11 +13,30 @@ int main(int argc, char **argv) {
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &p);
 
-    if (argc != 2) {
-        if (rank == 0) fprintf(stderr, "Uso: mpirun -np P %s N\n", argv[0]);
+if (argc < 2 || argc > 3) {
+    if (rank == 0) {
+        fprintf(stderr,
+                "Uso: mpirun -np P %s N [--validate]\n",
+                argv[0]);
+    }
+    MPI_Finalize();
+    return 2;
+}
+
+int validate = 0;
+
+if (argc == 3) {
+    if (strcmp(argv[2], "--validate") != 0) {
+        if (rank == 0) {
+            fprintf(stderr, "Opcao invalida: %s\n", argv[2]);
+        }
         MPI_Finalize();
         return 2;
     }
+
+    validate = 1;
+}
+
     char *end = NULL;
     unsigned long n_ul = strtoul(argv[1], &end, 10);
     if (!end || *end != '\0' || n_ul == 0 || n_ul % (unsigned long)p != 0) {
@@ -71,13 +93,123 @@ int main(int argc, char **argv) {
     MPI_Reduce(&comp_seconds, &max_comp, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
     MPI_Reduce(&mpi_seconds, &max_mpi, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
 
-    if (rank == 0) {
-        printf("{\"mode\":\"mpi_ring\",\"n\":%zu,\"processes\":%d,"
-               "\"total_seconds\":%.9f,\"compute_seconds_max\":%.9f,"
-               "\"mpi_seconds_max\":%.9f,\"checksum\":%.15g}\n",
-               n, p, max_total, max_comp, max_mpi, checksum(global_c, n * n));
+    int validation_passed = 0;
+double max_relative_error = 0.0;
+
+if (validate && rank == 0) {
+    /*
+     * A validacao e feita depois da medicao de desempenho.
+     * Portanto, o custo da referencia sequencial nao entra
+     * no tempo medido do algoritmo MPI.
+     */
+    double *a_ref = malloc(n * n * sizeof(double));
+    double *b_ref = malloc(n * n * sizeof(double));
+    double *c_ref = calloc(n * n, sizeof(double));
+
+    if (!a_ref || !b_ref || !c_ref) {
+        fprintf(stderr,
+                "Falha ao alocar matrizes para validacao\n");
+
+        free(a_ref);
+        free(b_ref);
+        free(c_ref);
+
+        MPI_Abort(MPI_COMM_WORLD, 1);
     }
+
+    /* Reconstrui as matrizes completas de entrada. */
+    fill_matrix_rows(a_ref, 0, n, n);
+    fill_matrix_rows(b_ref, 0, n, n);
+
+    /* Calcula a referencia sequencial. */
+    multiply_sequential(a_ref, b_ref, c_ref, n);
+
+    const double tolerance = 1e-10;
+    validation_passed = 1;
+    max_relative_error = 0.0;
+
+    /*
+     * Compara todos os N*N elementos.
+     * Como os valores das matrizes deste projeto sao positivos,
+     * a referencia nao deve conter elementos iguais a zero.
+     */
+    for (size_t i = 0; i < n * n; ++i) {
+        double reference = c_ref[i];
+        double actual = global_c[i];
+        double absolute_error = fabs(actual - reference);
+
+        double relative_error;
+
+        if (reference != 0.0) {
+            relative_error = absolute_error / fabs(reference);
+        } else {
+            relative_error = (absolute_error == 0.0) ? 0.0 : INFINITY;
+        }
+
+        if (relative_error > max_relative_error) {
+            max_relative_error = relative_error;
+        }
+
+        if (relative_error > tolerance) {
+            validation_passed = 0;
+        }
+    }
+
+    free(a_ref);
+    free(b_ref);
+    free(c_ref);
+}
+
+/*
+ * Todos os processos recebem o resultado da validacao.
+ * Assim, o status final e consistente em todos os ranks.
+ */
+if (validate) {
+    MPI_Bcast(&validation_passed, 1, MPI_INT, 0, MPI_COMM_WORLD);
+}
+    
+if (rank == 0) {
+    if (validate) {
+        printf(
+            "{\"mode\":\"mpi_ring\","
+            "\"n\":%zu,"
+            "\"processes\":%d,"
+            "\"total_seconds\":%.9f,"
+            "\"compute_seconds_max\":%.9f,"
+            "\"mpi_seconds_max\":%.9f,"
+            "\"checksum\":%.15g,"
+            "\"validation_passed\":%s,"
+            "\"max_relative_error\":%.15g}\n",
+            n,
+            p,
+            max_total,
+            max_comp,
+            max_mpi,
+            checksum(global_c, n * n),
+            validation_passed ? "true" : "false",
+            max_relative_error
+        );
+    } else {
+        printf(
+            "{\"mode\":\"mpi_ring\","
+            "\"n\":%zu,"
+            "\"processes\":%d,"
+            "\"total_seconds\":%.9f,"
+            "\"compute_seconds_max\":%.9f,"
+            "\"mpi_seconds_max\":%.9f,"
+            "\"checksum\":%.15g}\n",
+            n,
+            p,
+            max_total,
+            max_comp,
+            max_mpi,
+            checksum(global_c, n * n)
+        );
+    }
+}
     free(a); free(b_block); free(c); free(global_c);
+    int exit_code = (validate && !validation_passed) ? 1 : 0;
+
     MPI_Finalize();
-    return 0;
+    return exit_code;
 }

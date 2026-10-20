@@ -1,0 +1,25 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+
+# Sistema operacional e editores
+.DS_Store
+.idea/
+.vscode/
+
+# Compilação
+build/
+*.o
+*.so
+
+# Configurações locais e segredos
+.env
+
+# Dados experimentais: revisar antes de versionar
+# data/raw/*
+# data/processed/*
+# figures/*

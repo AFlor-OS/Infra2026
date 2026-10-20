@@ -1,0 +1,1 @@
+{"mode":"mpi_ring","n":64,"processes":2,"total_seconds":0.000143329,"compute_seconds_max":0.000074485,"mpi_seconds_max":0.000070123,"checksum":66856.4958337418,"validation_passed":true,"max_relative_error":1.06251853590405e-15}

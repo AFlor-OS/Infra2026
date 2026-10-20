@@ -1,0 +1,28 @@
+{
+  "run_id": "e5c6ee49-d78a-478e-a494-8920948066ff",
+  "timestamp_utc": "2026-10-20T00:51:27.922332+00:00",
+  "config": {
+    "mode": "strong",
+    "n": 256,
+    "processes": 4,
+    "repetition": 2
+  },
+  "result": {
+    "mode": "mpi_ring",
+    "n": 256,
+    "processes": 4,
+    "total_seconds": 0.003375281,
+    "compute_seconds_max": 0.002837681,
+    "mpi_seconds_max": 0.00068342,
+    "checksum": 4278093.34957359
+  },
+  "command": [
+    "mpirun",
+    "-np",
+    "4",
+    "/home/ana-flor/Infra2026/build/mpi_ring",
+    "256"
+  ],
+  "stdout": "{\"mode\":\"mpi_ring\",\"n\":256,\"processes\":4,\"total_seconds\":0.003375281,\"compute_seconds_max\":0.002837681,\"mpi_seconds_max\":0.000683420,\"checksum\":4278093.34957359}\n",
+  "stderr": "Invalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\n"
+}
