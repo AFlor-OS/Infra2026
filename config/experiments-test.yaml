@@ -1,0 +1,44 @@
+execution:
+  warmups: 0
+  pause_seconds: 0
+  random_seed: 2026
+
+statistics:
+  confidence_level: 0.95
+  pilot_repetitions: 2
+  default_repetitions: 2
+  saturation_repetitions: 2
+
+  adaptive:
+    enabled: false
+    relative_ci_half_width: 0.05
+    batch_size: 2
+    max_repetitions: 2
+
+  bootstrap:
+    enabled: true
+    samples: 1000
+    confidence_level: 0.95
+
+experiments:
+  strong:
+    enabled: true
+    scenario: E2
+    matrix_size: 64
+    processes: [1, 2, 4]
+    repetitions: 2
+
+  weak:
+    enabled: false
+    scenario: E3
+    base_matrix_size: 64
+    processes: [1, 2, 4]
+    matrix_sizes: [64, 80, 96]
+    repetitions: 2
+
+  saturation:
+    enabled: false
+    scenario: E4
+    matrix_sizes: [64]
+    processes: [1, 2, 4]
+    repetitions: 2

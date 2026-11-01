@@ -1,10 +1,20 @@
-mode,n,processes,repetition,total_seconds,compute_seconds_max,mpi_seconds_max,checksum,run_id
-mpi_ring,256,1,1,0.010258118,0.010256853,0.0,4278093.34957359,136318ce-45ba-4f74-be66-bb210b7c87c6
-mpi_ring,256,4,3,0.003377181,0.00283752,0.00074793,4278093.34957359,37b97070-4a76-4a4b-b8f8-af605dc87f69
-mpi_ring,256,4,1,0.00402858,0.003484163,0.001420717,4278093.34957359,3d69de19-7243-47fb-85c6-bd4c74d8f6b0
-mpi_ring,256,1,3,0.010032311,0.010031917,0.0,4278093.34957359,697b319b-1e3f-4b17-ac89-a36d1d4a8d61
-mpi_ring,256,2,1,0.005933699,0.005550317,0.000669375,4278093.34957359,752d90cd-7e75-4d0b-8c05-1bd210a8df14
-mpi_ring,256,1,2,0.010010288,0.010009618,0.0,4278093.34957359,9595f182-5aa5-4db8-bd3f-ff2a02c27147
-mpi_ring,256,2,2,0.005410901,0.005066616,0.000423989,4278093.34957359,985e18a6-b7d2-48a9-a8bc-bd0bb9760ad9
-mpi_ring,256,2,3,0.005408383,0.005058125,0.000382307,4278093.34957359,b69c1c0d-c7f1-4ec2-a868-0be42b9288ee
-mpi_ring,256,4,2,0.003375281,0.002837681,0.00068342,4278093.34957359,e5c6ee49-d78a-478e-a494-8920948066ff
+mode,workload_mode,n,processes,repetition,warmups,pause_seconds,run_id,timestamp_utc,runtime_seconds,checksum,validation_passed,max_relative_error,rank_timings
+strong,mpi,64,2,1,0.0,0.0,05033a08-d69a-4f48-82a8-886d84407a6c,2026-11-01T17:18:42.215538+00:00,0.000196529,66856.4958337418,,,"[{""rank"": 0, ""total_seconds"": 0.000196529, ""compute_seconds"": 6.5623e-05, ""communication_seconds"": 6.655e-05, ""gather_seconds"": 6.3545e-05}, {""rank"": 1, ""total_seconds"": 0.000191576, ""compute_seconds"": 6.183e-05, ""communication_seconds"": 6.3363e-05, ""gather_seconds"": 6.5754e-05}]"
+strong,,256,1,1,,,136318ce-45ba-4f74-be66-bb210b7c87c6,2026-10-20T00:51:23.924801+00:00,0.010258118,4278093.34957359,,,[]
+sequential,sequential,64,1,2,0.0,0.0,2c115439-8d1a-43a0-8a49-e543f3e76ae6,2026-11-01T17:18:40.466639+00:00,0.000165295,66856.4958337419,,,[]
+strong,,256,4,3,,,37b97070-4a76-4a4b-b8f8-af605dc87f69,2026-10-20T00:51:28.533372+00:00,0.003377181,4278093.34957359,,,[]
+strong,,256,4,1,,,3d69de19-7243-47fb-85c6-bd4c74d8f6b0,2026-10-20T00:51:27.315289+00:00,0.00402858,4278093.34957359,,,[]
+strong,mpi,64,1,2,0.0,0.0,5947a570-d77a-4fd0-9b3a-a6b7145350f7,2026-11-01T17:18:41.634478+00:00,0.000147738,66856.4958337419,,,"[{""rank"": 0, ""total_seconds"": 0.000147738, ""compute_seconds"": 0.000118699, ""communication_seconds"": 0.0, ""gather_seconds"": 2.8654e-05}]"
+strong,mpi,64,2,1,1.0,,6838c2aa-8947-4c08-a542-6528d3d7ea4f,2026-11-01T16:58:13.770120+00:00,0.000165517,66856.4958337418,,,"[{""rank"": 0, ""total_seconds"": 0.000165517, ""compute_seconds"": 6.1961e-05, ""communication_seconds"": 6.0126e-05, ""gather_seconds"": 4.2699e-05}, {""rank"": 1, ""total_seconds"": 0.000161715, ""compute_seconds"": 4.8887e-05, ""communication_seconds"": 6.2582e-05, ""gather_seconds"": 4.98e-05}]"
+strong,,256,1,3,,,697b319b-1e3f-4b17-ac89-a36d1d4a8d61,2026-10-20T00:51:25.049439+00:00,0.010032311,4278093.34957359,,,[]
+strong,,256,2,1,,,752d90cd-7e75-4d0b-8c05-1bd210a8df14,2026-10-20T00:51:25.619307+00:00,0.005933699,4278093.34957359,,,[]
+strong,,256,1,2,,,9595f182-5aa5-4db8-bd3f-ff2a02c27147,2026-10-20T00:51:24.488508+00:00,0.010010288,4278093.34957359,,,[]
+strong,,256,2,2,,,985e18a6-b7d2-48a9-a8bc-bd0bb9760ad9,2026-10-20T00:51:26.180081+00:00,0.005410901,4278093.34957359,,,[]
+strong,,256,2,3,,,b69c1c0d-c7f1-4ec2-a868-0be42b9288ee,2026-10-20T00:51:26.735870+00:00,0.005408383,4278093.34957359,,,[]
+strong,mpi,64,2,2,0.0,0.0,b86d88af-d618-4121-a7ec-3e4408cb01e5,2026-11-01T17:18:42.788338+00:00,0.000183675,66856.4958337418,,,"[{""rank"": 0, ""total_seconds"": 0.000183675, ""compute_seconds"": 6.5772e-05, ""communication_seconds"": 7.1488e-05, ""gather_seconds"": 4.5757e-05}, {""rank"": 1, ""total_seconds"": 0.000177422, ""compute_seconds"": 6.2336e-05, ""communication_seconds"": 6.4563e-05, ""gather_seconds"": 4.9886e-05}]"
+strong,mpi,64,1,1,0.0,0.0,c41f9f20-7d65-4110-911c-f1616eca3c82,2026-11-01T17:18:41.046062+00:00,0.000168489,66856.4958337419,,,"[{""rank"": 0, ""total_seconds"": 0.000168489, ""compute_seconds"": 0.000127115, ""communication_seconds"": 0.0, ""gather_seconds"": 4.0955e-05}]"
+sequential,sequential,64,1,1,1.0,,c4452063-c77d-4062-b10c-51d4c3ca2679,2026-11-01T16:58:19.552025+00:00,0.00017038,66856.4958337419,,,[]
+sequential,sequential,64,1,1,0.0,0.0,d76fd6f0-0184-4508-9b4b-961e2940b94c,2026-11-01T17:18:40.458023+00:00,0.000168829,66856.4958337419,,,[]
+strong,mpi,64,4,2,0.0,0.0,e4a460ab-9e99-434d-99a0-30c4735f926f,2026-11-01T17:18:44.043201+00:00,0.000282565,66856.4958337418,,,"[{""rank"": 0, ""total_seconds"": 0.000257058, ""compute_seconds"": 3.5693e-05, ""communication_seconds"": 0.000141273, ""gather_seconds"": 7.8793e-05}, {""rank"": 1, ""total_seconds"": 0.000222566, ""compute_seconds"": 3.627e-05, ""communication_seconds"": 0.00013362, ""gather_seconds"": 5.1763e-05}, {""rank"": 2, ""total_seconds"": 0.000282565, ""compute_seconds"": 3.3722e-05, ""communication_seconds"": 0.000121881, ""gather_seconds"": 0.00012602}, {""rank"": 3, ""total_seconds"": 0.000201949, ""compute_seconds"": 3.2504e-05, ""communication_seconds"": 0.000132658, ""gather_seconds"": 3.5731e-05}]"
+strong,,256,4,2,,,e5c6ee49-d78a-478e-a494-8920948066ff,2026-10-20T00:51:27.922332+00:00,0.003375281,4278093.34957359,,,[]
+strong,mpi,64,4,1,0.0,0.0,e858a613-9fee-4e2b-a910-e48f9e95cf75,2026-11-01T17:18:43.418421+00:00,0.000395,66856.4958337418,,,"[{""rank"": 0, ""total_seconds"": 0.000382902, ""compute_seconds"": 5.3443e-05, ""communication_seconds"": 0.000223406, ""gather_seconds"": 0.000104932}, {""rank"": 1, ""total_seconds"": 0.000305313, ""compute_seconds"": 6.9174e-05, ""communication_seconds"": 0.000211661, ""gather_seconds"": 2.2304e-05}, {""rank"": 2, ""total_seconds"": 0.000395, ""compute_seconds"": 7.9034e-05, ""communication_seconds"": 0.000205335, ""gather_seconds"": 0.000108981}, {""rank"": 3, ""total_seconds"": 0.000360471, ""compute_seconds"": 5.6954e-05, ""communication_seconds"": 0.000233315, ""gather_seconds"": 6.9151e-05}]"

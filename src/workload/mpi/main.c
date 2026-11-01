@@ -59,8 +59,12 @@ if (argc == 3) {
     fill_matrix_rows(b_block, (size_t)rank * rows, rows, n);
 
     MPI_Barrier(MPI_COMM_WORLD);
+
     double total_start = MPI_Wtime();
-    double comp_seconds = 0.0, mpi_seconds = 0.0;
+
+    double comp_seconds = 0.0;
+    double mpi_seconds = 0.0;
+    double gather_seconds = 0.0;
 
     for (int step = 0; step < p; ++step) {
         int block_id = (rank + step) % p;
@@ -84,15 +88,66 @@ if (argc == 3) {
             mpi_seconds += MPI_Wtime() - mpi_start;
         }
     }
-    double total_seconds = MPI_Wtime() - total_start;
+
+    double gather_start = MPI_Wtime();
 
     MPI_Gather(c, (int)local_elems, MPI_DOUBLE, global_c,
-               (int)local_elems, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-    double max_total = 0.0, max_comp = 0.0, max_mpi = 0.0;
-    MPI_Reduce(&total_seconds, &max_total, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
-    MPI_Reduce(&comp_seconds, &max_comp, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
-    MPI_Reduce(&mpi_seconds, &max_mpi, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
+            (int)local_elems, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 
+    gather_seconds = MPI_Wtime() - gather_start;
+
+    double total_seconds = MPI_Wtime() - total_start;
+
+    double *rank_total = NULL;
+    double *rank_compute = NULL;
+    double *rank_communication = NULL;
+    double *rank_gather = NULL;
+
+    if (rank == 0) {
+        rank_total = malloc(p * sizeof(double));
+        rank_compute = malloc(p * sizeof(double));
+        rank_communication = malloc(p * sizeof(double));
+        rank_gather = malloc(p * sizeof(double));
+
+        if (!rank_total || !rank_compute ||
+            !rank_communication || !rank_gather) {
+            fprintf(stderr, "Falha ao alocar tempos por processo\n");
+            MPI_Abort(MPI_COMM_WORLD, 1);
+        }
+    }
+
+    MPI_Gather(&total_seconds, 1, MPI_DOUBLE,
+            rank_total, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
+    MPI_Gather(&comp_seconds, 1, MPI_DOUBLE,
+            rank_compute, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
+    MPI_Gather(&mpi_seconds, 1, MPI_DOUBLE,
+            rank_communication, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
+    MPI_Gather(&gather_seconds, 1, MPI_DOUBLE,
+            rank_gather, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
+    double max_total = 0.0;
+    double max_comp = 0.0;
+    double max_mpi = 0.0;
+    double max_gather = 0.0;
+
+    if (rank == 0) {
+        for (int i = 0; i < p; ++i) {
+            if (rank_total[i] > max_total)
+                max_total = rank_total[i];
+
+            if (rank_compute[i] > max_comp)
+                max_comp = rank_compute[i];
+
+            if (rank_communication[i] > max_mpi)
+                max_mpi = rank_communication[i];
+
+            if (rank_gather[i] > max_gather)
+                max_gather = rank_gather[i];
+        }
+    }
     int validation_passed = 0;
 double max_relative_error = 0.0;
 
@@ -169,46 +224,63 @@ if (validate) {
 }
     
 if (rank == 0) {
+    printf(
+        "{\"mode\":\"mpi_ring\","
+        "\"n\":%zu,"
+        "\"processes\":%d,"
+        "\"total_seconds_max\":%.9f,"
+        "\"compute_seconds_max\":%.9f,"
+        "\"communication_seconds_max\":%.9f,"
+        "\"gather_seconds_max\":%.9f,"
+        "\"checksum\":%.15g,"
+        "\"rank_timings\":[",
+        n,
+        p,
+        max_total,
+        max_comp,
+        max_mpi,
+        max_gather,
+        checksum(global_c, n * n)
+    );
+
+    for (int i = 0; i < p; ++i) {
+        if (i > 0) printf(",");
+
+        printf(
+            "{\"rank\":%d,"
+            "\"total_seconds\":%.9f,"
+            "\"compute_seconds\":%.9f,"
+            "\"communication_seconds\":%.9f,"
+            "\"gather_seconds\":%.9f}",
+            i,
+            rank_total[i],
+            rank_compute[i],
+            rank_communication[i],
+            rank_gather[i]
+        );
+    }
+
+    printf("]");
+
     if (validate) {
         printf(
-            "{\"mode\":\"mpi_ring\","
-            "\"n\":%zu,"
-            "\"processes\":%d,"
-            "\"total_seconds\":%.9f,"
-            "\"compute_seconds_max\":%.9f,"
-            "\"mpi_seconds_max\":%.9f,"
-            "\"checksum\":%.15g,"
-            "\"validation_passed\":%s,"
-            "\"max_relative_error\":%.15g}\n",
-            n,
-            p,
-            max_total,
-            max_comp,
-            max_mpi,
-            checksum(global_c, n * n),
+            ",\"validation_passed\":%s,"
+            "\"max_relative_error\":%.15g",
             validation_passed ? "true" : "false",
             max_relative_error
         );
-    } else {
-        printf(
-            "{\"mode\":\"mpi_ring\","
-            "\"n\":%zu,"
-            "\"processes\":%d,"
-            "\"total_seconds\":%.9f,"
-            "\"compute_seconds_max\":%.9f,"
-            "\"mpi_seconds_max\":%.9f,"
-            "\"checksum\":%.15g}\n",
-            n,
-            p,
-            max_total,
-            max_comp,
-            max_mpi,
-            checksum(global_c, n * n)
-        );
     }
+
+    printf("}\n");
 }
+
     free(a); free(b_block); free(c); free(global_c);
     int exit_code = (validate && !validation_passed) ? 1 : 0;
+
+    free(rank_total);
+    free(rank_compute);
+    free(rank_communication);
+    free(rank_gather);
 
     MPI_Finalize();
     return exit_code;

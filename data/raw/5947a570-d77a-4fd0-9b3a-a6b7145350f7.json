@@ -1,0 +1,53 @@
+{
+  "run_id": "5947a570-d77a-4fd0-9b3a-a6b7145350f7",
+  "timestamp_utc": "2026-11-01T17:18:41.634478+00:00",
+  "config": {
+    "mode": "strong",
+    "workload_mode": "mpi",
+    "n": 64,
+    "processes": 1,
+    "repetition": 2,
+    "warmups": 0,
+    "pause_seconds": 0.0
+  },
+  "environment": {
+    "hostname": "zina2",
+    "platform": "Linux-6.17.0-1033-oem-x86_64-with-glibc2.39",
+    "system": "Linux",
+    "machine": "x86_64",
+    "processor": "x86_64",
+    "python_version": "3.12.3",
+    "git_commit": "abfaa2678d1138114e8f55ce21a01803b6db4c64",
+    "mpi_launcher": "mpirun",
+    "mpi_version": "mpirun (Open MPI) 4.1.6\n\nReport bugs to http://www.open-mpi.org/community/help/",
+    "mpicc_version": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
+  },
+  "result": {
+    "mode": "mpi_ring",
+    "n": 64,
+    "processes": 1,
+    "total_seconds_max": 0.000147738,
+    "compute_seconds_max": 0.000118699,
+    "communication_seconds_max": 0.0,
+    "gather_seconds_max": 2.8654e-05,
+    "checksum": 66856.4958337419,
+    "rank_timings": [
+      {
+        "rank": 0,
+        "total_seconds": 0.000147738,
+        "compute_seconds": 0.000118699,
+        "communication_seconds": 0.0,
+        "gather_seconds": 2.8654e-05
+      }
+    ]
+  },
+  "command": [
+    "mpirun",
+    "-np",
+    "1",
+    "/home/ana-flor/Infra2026/build/mpi_ring",
+    "64"
+  ],
+  "stdout": "{\"mode\":\"mpi_ring\",\"n\":64,\"processes\":1,\"total_seconds_max\":0.000147738,\"compute_seconds_max\":0.000118699,\"communication_seconds_max\":0.000000000,\"gather_seconds_max\":0.000028654,\"checksum\":66856.4958337419,\"rank_timings\":[{\"rank\":0,\"total_seconds\":0.000147738,\"compute_seconds\":0.000118699,\"communication_seconds\":0.000000000,\"gather_seconds\":0.000028654}]}\n",
+  "stderr": "Invalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\n"
+}
