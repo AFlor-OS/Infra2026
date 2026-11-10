@@ -1,0 +1,54 @@
+{
+  "run_id": "18061f62-241e-4098-a850-ea8a1229a82d",
+  "campaign_id": "ddb7eabf-3584-414a-ade5-816ff1dac410",
+  "timestamp_utc": "2026-11-10T01:01:53.984268+00:00",
+  "config": {
+    "mode": "weak",
+    "workload_mode": "mpi",
+    "n": 2048,
+    "processes": 1,
+    "repetition": 6,
+    "warmups": 1,
+    "pause_seconds": 2.0
+  },
+  "environment": {
+    "hostname": "zina2",
+    "platform": "Linux-6.17.0-1033-oem-x86_64-with-glibc2.39",
+    "system": "Linux",
+    "machine": "x86_64",
+    "processor": "x86_64",
+    "python_version": "3.12.3",
+    "git_commit": "9f63eda78e98c6f881d83b20a836978ce7005264",
+    "mpi_launcher": "mpirun",
+    "mpi_version": "mpirun (Open MPI) 4.1.6\n\nReport bugs to http://www.open-mpi.org/community/help/",
+    "mpicc_version": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
+  },
+  "result": {
+    "mode": "mpi_ring",
+    "n": 2048,
+    "processes": 1,
+    "total_seconds_max": 6.668697493,
+    "compute_seconds_max": 6.643942231,
+    "communication_seconds_max": 0.0,
+    "gather_seconds_max": 0.02475296,
+    "checksum": 2190218521.15507,
+    "rank_timings": [
+      {
+        "rank": 0,
+        "total_seconds": 6.668697493,
+        "compute_seconds": 6.643942231,
+        "communication_seconds": 0.0,
+        "gather_seconds": 0.02475296
+      }
+    ]
+  },
+  "command": [
+    "mpirun",
+    "-np",
+    "1",
+    "/home/ana-flor/Infra2026/build/mpi_ring",
+    "2048"
+  ],
+  "stdout": "{\"mode\":\"mpi_ring\",\"n\":2048,\"processes\":1,\"total_seconds_max\":6.668697493,\"compute_seconds_max\":6.643942231,\"communication_seconds_max\":0.000000000,\"gather_seconds_max\":0.024752960,\"checksum\":2190218521.15507,\"rank_timings\":[{\"rank\":0,\"total_seconds\":6.668697493,\"compute_seconds\":6.643942231,\"communication_seconds\":0.000000000,\"gather_seconds\":0.024752960}]}\n",
+  "stderr": "Invalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\n"
+}

@@ -1,0 +1,36 @@
+{
+  "run_id": "f9ebd505-76cc-4058-bef0-5df4a5cb94f3",
+  "campaign_id": "e5ece5bf-b895-4693-bcc2-ad9b4bc5ce54",
+  "timestamp_utc": "2026-11-09T23:02:49.534406+00:00",
+  "config": {
+    "mode": "sequential",
+    "workload_mode": "sequential",
+    "n": 4960,
+    "processes": 1,
+    "repetition": 7,
+    "warmups": 1,
+    "pause_seconds": 2.0
+  },
+  "environment": {
+    "hostname": "zina2",
+    "platform": "Linux-6.17.0-1033-oem-x86_64-with-glibc2.39",
+    "system": "Linux",
+    "machine": "x86_64",
+    "processor": "x86_64",
+    "python_version": "3.12.3",
+    "git_commit": "9f63eda78e98c6f881d83b20a836978ce7005264"
+  },
+  "result": {
+    "mode": "sequential",
+    "n": 4960,
+    "processes": 1,
+    "total_seconds": 84.569305767,
+    "checksum": 31113049206.742
+  },
+  "command": [
+    "/home/ana-flor/Infra2026/build/sequential",
+    "4960"
+  ],
+  "stdout": "{\"mode\":\"sequential\",\"n\":4960,\"processes\":1,\"total_seconds\":84.569305767,\"checksum\":31113049206.742}\n",
+  "stderr": ""
+}

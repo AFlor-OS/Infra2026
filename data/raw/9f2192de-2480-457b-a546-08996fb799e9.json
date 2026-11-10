@@ -1,0 +1,75 @@
+{
+  "run_id": "9f2192de-2480-457b-a546-08996fb799e9",
+  "campaign_id": "e5ece5bf-b895-4693-bcc2-ad9b4bc5ce54",
+  "timestamp_utc": "2026-11-10T00:11:42.874494+00:00",
+  "config": {
+    "mode": "strong",
+    "workload_mode": "mpi",
+    "n": 4960,
+    "processes": 4,
+    "repetition": 10,
+    "warmups": 1,
+    "pause_seconds": 2.0
+  },
+  "environment": {
+    "hostname": "zina2",
+    "platform": "Linux-6.17.0-1033-oem-x86_64-with-glibc2.39",
+    "system": "Linux",
+    "machine": "x86_64",
+    "processor": "x86_64",
+    "python_version": "3.12.3",
+    "git_commit": "9f63eda78e98c6f881d83b20a836978ce7005264",
+    "mpi_launcher": "mpirun",
+    "mpi_version": "mpirun (Open MPI) 4.1.6\n\nReport bugs to http://www.open-mpi.org/community/help/",
+    "mpicc_version": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
+  },
+  "result": {
+    "mode": "mpi_ring",
+    "n": 4960,
+    "processes": 4,
+    "total_seconds_max": 40.608090393,
+    "compute_seconds_max": 38.721072079,
+    "communication_seconds_max": 16.283921819,
+    "gather_seconds_max": 7.445841121,
+    "checksum": 31113049206.742,
+    "rank_timings": [
+      {
+        "rank": 0,
+        "total_seconds": 40.608090393,
+        "compute_seconds": 38.721072079,
+        "communication_seconds": 0.20558965,
+        "gather_seconds": 1.681422594
+      },
+      {
+        "rank": 1,
+        "total_seconds": 40.500360601,
+        "compute_seconds": 24.180235111,
+        "communication_seconds": 16.283921819,
+        "gather_seconds": 0.036198783
+      },
+      {
+        "rank": 2,
+        "total_seconds": 40.532853452,
+        "compute_seconds": 31.31383458,
+        "communication_seconds": 1.773172486,
+        "gather_seconds": 7.445841121
+      },
+      {
+        "rank": 3,
+        "total_seconds": 40.573589729,
+        "compute_seconds": 24.375284008,
+        "communication_seconds": 16.117720181,
+        "gather_seconds": 0.080581288
+      }
+    ]
+  },
+  "command": [
+    "mpirun",
+    "-np",
+    "4",
+    "/home/ana-flor/Infra2026/build/mpi_ring",
+    "4960"
+  ],
+  "stdout": "{\"mode\":\"mpi_ring\",\"n\":4960,\"processes\":4,\"total_seconds_max\":40.608090393,\"compute_seconds_max\":38.721072079,\"communication_seconds_max\":16.283921819,\"gather_seconds_max\":7.445841121,\"checksum\":31113049206.742,\"rank_timings\":[{\"rank\":0,\"total_seconds\":40.608090393,\"compute_seconds\":38.721072079,\"communication_seconds\":0.205589650,\"gather_seconds\":1.681422594},{\"rank\":1,\"total_seconds\":40.500360601,\"compute_seconds\":24.180235111,\"communication_seconds\":16.283921819,\"gather_seconds\":0.036198783},{\"rank\":2,\"total_seconds\":40.532853452,\"compute_seconds\":31.313834580,\"communication_seconds\":1.773172486,\"gather_seconds\":7.445841121},{\"rank\":3,\"total_seconds\":40.573589729,\"compute_seconds\":24.375284008,\"communication_seconds\":16.117720181,\"gather_seconds\":0.080581288}]}\n",
+  "stderr": "Invalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\n"
+}
