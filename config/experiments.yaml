@@ -18,7 +18,7 @@ statistics:
     max_repetitions: 20
 
   bootstrap:
-    enabled: false
+    enabled: true
     samples: 10000
     confidence_level: 0.95
 

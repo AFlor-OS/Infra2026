@@ -1,0 +1,151 @@
+{
+  "run_id": "2d62ac57-baba-4f28-a91a-50fb3e074670",
+  "campaign_id": "9d912bcf-6d7d-4a9a-97e2-14f2e628c37f",
+  "timestamp_utc": "2026-11-10T13:43:11.528619+00:00",
+  "config": {
+    "mode": "saturation",
+    "workload_mode": "mpi",
+    "n": 1008,
+    "processes": 14,
+    "repetition": 1,
+    "warmups": 0,
+    "pause_seconds": 0,
+    "validate": true
+  },
+  "environment": {
+    "hostname": "zina2",
+    "platform": "Linux-6.17.0-1033-oem-x86_64-with-glibc2.39",
+    "system": "Linux",
+    "machine": "x86_64",
+    "processor": "x86_64",
+    "python_version": "3.12.3",
+    "git_commit": "e10ba7536428ff387b742cb7d55bc33f521c44fb",
+    "mpi_launcher": "mpirun",
+    "mpi_version": "mpirun (Open MPI) 4.1.6\n\nReport bugs to http://www.open-mpi.org/community/help/",
+    "mpicc_version": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
+  },
+  "result": {
+    "mode": "mpi_ring",
+    "n": 1008,
+    "processes": 14,
+    "total_seconds_max": 0.168172419,
+    "compute_seconds_max": 0.092663516,
+    "communication_seconds_max": 0.105440938,
+    "gather_seconds_max": 0.032729776,
+    "checksum": 261144012.883032,
+    "rank_timings": [
+      {
+        "rank": 0,
+        "total_seconds": 0.167961332,
+        "compute_seconds": 0.074603966,
+        "communication_seconds": 0.077232337,
+        "gather_seconds": 0.016108907
+      },
+      {
+        "rank": 1,
+        "total_seconds": 0.151933314,
+        "compute_seconds": 0.061223803,
+        "communication_seconds": 0.082708453,
+        "gather_seconds": 0.007987505
+      },
+      {
+        "rank": 2,
+        "total_seconds": 0.160205358,
+        "compute_seconds": 0.046794235,
+        "communication_seconds": 0.094689062,
+        "gather_seconds": 0.018706783
+      },
+      {
+        "rank": 3,
+        "total_seconds": 0.142690931,
+        "compute_seconds": 0.04638461,
+        "communication_seconds": 0.089552169,
+        "gather_seconds": 0.006740925
+      },
+      {
+        "rank": 4,
+        "total_seconds": 0.164179776,
+        "compute_seconds": 0.044883661,
+        "communication_seconds": 0.086549911,
+        "gather_seconds": 0.032729776
+      },
+      {
+        "rank": 5,
+        "total_seconds": 0.141305859,
+        "compute_seconds": 0.048066016,
+        "communication_seconds": 0.092534529,
+        "gather_seconds": 0.00069614
+      },
+      {
+        "rank": 6,
+        "total_seconds": 0.156670802,
+        "compute_seconds": 0.044372324,
+        "communication_seconds": 0.105440938,
+        "gather_seconds": 0.006842493
+      },
+      {
+        "rank": 7,
+        "total_seconds": 0.155310301,
+        "compute_seconds": 0.089761353,
+        "communication_seconds": 0.064951634,
+        "gather_seconds": 0.0005805
+      },
+      {
+        "rank": 8,
+        "total_seconds": 0.168172419,
+        "compute_seconds": 0.092663516,
+        "communication_seconds": 0.058511213,
+        "gather_seconds": 0.016980766
+      },
+      {
+        "rank": 9,
+        "total_seconds": 0.148234809,
+        "compute_seconds": 0.083596249,
+        "communication_seconds": 0.062508934,
+        "gather_seconds": 0.002117579
+      },
+      {
+        "rank": 10,
+        "total_seconds": 0.153614479,
+        "compute_seconds": 0.047555628,
+        "communication_seconds": 0.103048383,
+        "gather_seconds": 0.002995999
+      },
+      {
+        "rank": 11,
+        "total_seconds": 0.151847471,
+        "compute_seconds": 0.048964135,
+        "communication_seconds": 0.09832435,
+        "gather_seconds": 0.00454895
+      },
+      {
+        "rank": 12,
+        "total_seconds": 0.156338289,
+        "compute_seconds": 0.089336092,
+        "communication_seconds": 0.06056685,
+        "gather_seconds": 0.006417471
+      },
+      {
+        "rank": 13,
+        "total_seconds": 0.151547621,
+        "compute_seconds": 0.084640368,
+        "communication_seconds": 0.063277606,
+        "gather_seconds": 0.000589284
+      }
+    ],
+    "validation_passed": true,
+    "max_relative_error": 1.96296820019293e-15
+  },
+  "command": [
+    "mpirun",
+    "--use-hwthread-cpus",
+    "-np",
+    "14",
+    "/home/ana-flor/Infra2026/build/mpi_ring",
+    "1008",
+    "--validate"
+  ],
+  "stdout": "{\"mode\":\"mpi_ring\",\"n\":1008,\"processes\":14,\"total_seconds_max\":0.168172419,\"compute_seconds_max\":0.092663516,\"communication_seconds_max\":0.105440938,\"gather_seconds_max\":0.032729776,\"checksum\":261144012.883032,\"rank_timings\":[{\"rank\":0,\"total_seconds\":0.167961332,\"compute_seconds\":0.074603966,\"communication_seconds\":0.077232337,\"gather_seconds\":0.016108907},{\"rank\":1,\"total_seconds\":0.151933314,\"compute_seconds\":0.061223803,\"communication_seconds\":0.082708453,\"gather_seconds\":0.007987505},{\"rank\":2,\"total_seconds\":0.160205358,\"compute_seconds\":0.046794235,\"communication_seconds\":0.094689062,\"gather_seconds\":0.018706783},{\"rank\":3,\"total_seconds\":0.142690931,\"compute_seconds\":0.046384610,\"communication_seconds\":0.089552169,\"gather_seconds\":0.006740925},{\"rank\":4,\"total_seconds\":0.164179776,\"compute_seconds\":0.044883661,\"communication_seconds\":0.086549911,\"gather_seconds\":0.032729776},{\"rank\":5,\"total_seconds\":0.141305859,\"compute_seconds\":0.048066016,\"communication_seconds\":0.092534529,\"gather_seconds\":0.000696140},{\"rank\":6,\"total_seconds\":0.156670802,\"compute_seconds\":0.044372324,\"communication_seconds\":0.105440938,\"gather_seconds\":0.006842493},{\"rank\":7,\"total_seconds\":0.155310301,\"compute_seconds\":0.089761353,\"communication_seconds\":0.064951634,\"gather_seconds\":0.000580500},{\"rank\":8,\"total_seconds\":0.168172419,\"compute_seconds\":0.092663516,\"communication_seconds\":0.058511213,\"gather_seconds\":0.016980766},{\"rank\":9,\"total_seconds\":0.148234809,\"compute_seconds\":0.083596249,\"communication_seconds\":0.062508934,\"gather_seconds\":0.002117579},{\"rank\":10,\"total_seconds\":0.153614479,\"compute_seconds\":0.047555628,\"communication_seconds\":0.103048383,\"gather_seconds\":0.002995999},{\"rank\":11,\"total_seconds\":0.151847471,\"compute_seconds\":0.048964135,\"communication_seconds\":0.098324350,\"gather_seconds\":0.004548950},{\"rank\":12,\"total_seconds\":0.156338289,\"compute_seconds\":0.089336092,\"communication_seconds\":0.060566850,\"gather_seconds\":0.006417471},{\"rank\":13,\"total_seconds\":0.151547621,\"compute_seconds\":0.084640368,\"communication_seconds\":0.063277606,\"gather_seconds\":0.000589284}],\"validation_passed\":true,\"max_relative_error\":1.96296820019293e-15}\n",
+  "stderr": "Invalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\nInvalid MIT-MAGIC-COOKIE-1 key\n",
+  "returncode": 0
+}

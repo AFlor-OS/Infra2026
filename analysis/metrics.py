@@ -59,7 +59,20 @@ def load_raw_runs(
             "run_id": item["run_id"],
             "campaign_id": item_campaign_id,
             "timestamp_utc": item.get("timestamp_utc"),
-            "runtime_seconds": get_runtime(result),
+                        "runtime_seconds": get_runtime(result),
+            "compute_seconds": result.get("compute_seconds_max"),
+            "communication_seconds": result.get("communication_seconds_max"),
+            "gather_seconds": result.get("gather_seconds_max"),
+            "communication_fraction": (
+                result["communication_seconds_max"] / get_runtime(result)
+                if result.get("communication_seconds_max") is not None
+                else None
+            ),
+            "gather_fraction": (
+                result["gather_seconds_max"] / get_runtime(result)
+                if result.get("gather_seconds_max") is not None
+                else None
+            ),
             "checksum": result.get("checksum"),
             "validation_passed": result.get("validation_passed"),
             "max_relative_error": result.get("max_relative_error"),
@@ -136,6 +149,25 @@ def summarize_raw(
 
         stats_result = describe(values)
 
+        component_metrics = {
+            "compute_seconds": "compute_mean_seconds",
+            "communication_seconds": "communication_mean_seconds",
+            "gather_seconds": "gather_mean_seconds",
+            "communication_fraction": "communication_fraction_mean",
+            "gather_fraction": "gather_fraction_mean",
+        }
+
+        for source_column, output_column in component_metrics.items():
+            if source_column in group:
+                component_values = (
+                    group[source_column].dropna().to_numpy(dtype=float)
+                )
+
+                if component_values.size:
+                    stats_result[output_column] = float(
+                        np.mean(component_values)
+                    )
+
         if len(values) >= 2:
             stats_result.update(mean_ci(values, confidence_level))
 
@@ -164,16 +196,22 @@ def summarize_raw(
     # Escalabilidade
     scaling_rows = []
 
+
     sequential = runs[runs["mode"] == "sequential"]
 
     for _, row in summary.iterrows():
         mode = row["mode"]
 
-        if mode not in {"strong", "weak"}:
+        if mode not in {"strong", "weak", "saturation"}:
             continue
 
         n = int(row["n"])
         processes = int(row["processes"])
+
+        # P=1 é o próprio baseline no experimento de saturação.
+        # Não precisamos calcular speedup de uma configuração contra ela mesma.
+        if mode == "saturation" and processes == 1:
+            continue
 
         parallel_values = runs[
             (runs["mode"] == mode)
@@ -181,23 +219,37 @@ def summarize_raw(
             & (runs["processes"] == processes)
         ]["runtime_seconds"].to_numpy(dtype=float)
 
-        if mode == "strong":
+        if mode == "saturation":
             baseline_n = n
-        else:
-            baseline_n = int(
-                experiment_config.get("experiments", {})
-                .get("weak", {})
-                .get("base_matrix_size", 2048)
-            )
 
-        baseline_values = sequential[
-            sequential["n"] == baseline_n
-        ]["runtime_seconds"].to_numpy(dtype=float)
+            baseline_values = runs[
+                (runs["mode"] == "saturation")
+                & (runs["n"] == n)
+                & (runs["processes"] == 1)
+            ]["runtime_seconds"].to_numpy(dtype=float)
+
+            efficiency_factor = 1.0 / processes
+
+        else:
+            if mode == "strong":
+                baseline_n = n
+                efficiency_factor = 1.0 / processes
+            else:
+                baseline_n = int(
+                    experiment_config.get("experiments", {})
+                    .get("weak", {})
+                    .get("base_matrix_size", 2048)
+                )
+                efficiency_factor = (n / baseline_n) ** 3 / processes
+
+            baseline_values = sequential[
+                sequential["n"] == baseline_n
+            ]["runtime_seconds"].to_numpy(dtype=float)
 
         # Sem baseline, não é possível calcular speedup.
         if baseline_values.size == 0:
             print(
-                f"[AVISO] Sem baseline sequencial para N={baseline_n}. "
+                f"[AVISO] Sem baseline compatível para N={baseline_n}. "
                 f"Ignorando {mode}, N={n}, P={processes}."
             )
             continue
@@ -209,13 +261,7 @@ def summarize_raw(
         parallel_mean = float(np.mean(parallel_values))
 
         speedup_value = baseline_mean / parallel_mean
-
-        if mode == "strong":
-            efficiency_value = speedup_value / processes
-            efficiency_factor = 1.0 / processes
-        else:
-            efficiency_factor = (n / baseline_n) ** 3 / processes
-            efficiency_value = speedup_value * efficiency_factor
+        efficiency_value = speedup_value * efficiency_factor
 
         result = {
             "mode": mode,

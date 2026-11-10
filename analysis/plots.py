@@ -13,6 +13,45 @@ def plot_runtime(
 ) -> None:
     df = pd.read_csv(summary_csv)
 
+    if mode == "saturation":
+        experiment = df[df["mode"] == mode]
+
+        if experiment.empty:
+            raise ValueError(f"Dados insuficientes para o experimento {mode}")
+
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        fig, ax = plt.subplots(figsize=(9, 5))
+
+        for n, group in experiment.groupby("n"):
+            group = group.sort_values("processes")
+            means = group["mean"].to_numpy()
+
+            errors = np.vstack([
+                means - group["ci_low"].to_numpy(),
+                group["ci_high"].to_numpy() - means,
+            ])
+
+            ax.errorbar(
+                group["processes"],
+                means,
+                yerr=errors,
+                marker="o",
+                capsize=4,
+                label=f"N={int(n)}",
+            )
+
+        ax.set_xlabel("Número de processos")
+        ax.set_ylabel("Tempo médio (s)")
+        ax.set_title(title)
+        ax.set_xticks(sorted(experiment["processes"].unique()))
+        ax.grid(True, alpha=0.3)
+        ax.legend(title="Tamanho da matriz")
+
+        fig.tight_layout()
+        fig.savefig(output_path, dpi=300)
+        plt.close(fig)
+        return
+
     experiment = df[df["mode"] == mode].sort_values("processes")
     baseline = df[df["mode"] == "sequential"]
 
@@ -81,6 +120,80 @@ def plot_scaling(
     if df.empty:
         raise ValueError(f"Dados de escalabilidade ausentes para {mode}")
 
+    if mode == "saturation":
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+
+        fig, axes = plt.subplots(1, 2, figsize=(13, 5))
+
+        for n, group in df.groupby("n"):
+            group = group.sort_values("processes")
+
+            # Inclui P=1 como referência: speedup e eficiência iguais a 1.
+            processes = np.concatenate(([1], group["processes"].to_numpy()))
+            speedup = np.concatenate(([1.0], group["speedup"].to_numpy()))
+            efficiency = np.concatenate(([1.0], group["efficiency"].to_numpy()))
+
+            speedup_errors = np.vstack([
+                speedup - np.concatenate(([1.0], group["speedup_ci_low"].to_numpy())),
+                np.concatenate(([1.0], group["speedup_ci_high"].to_numpy())) - speedup,
+            ])
+
+            efficiency_errors = np.vstack([
+                efficiency - np.concatenate(([1.0], group["efficiency_ci_low"].to_numpy())),
+                np.concatenate(([1.0], group["efficiency_ci_high"].to_numpy())) - efficiency,
+            ])
+
+            axes[0].errorbar(
+                processes,
+                speedup,
+                yerr=speedup_errors,
+                marker="o",
+                capsize=4,
+                label=f"N={int(n)}",
+            )
+
+            axes[1].errorbar(
+                processes,
+                efficiency,
+                yerr=efficiency_errors,
+                marker="o",
+                capsize=4,
+                label=f"N={int(n)}",
+            )
+
+        all_processes = sorted([1] + df["processes"].unique().tolist())
+
+        axes[0].plot(
+            all_processes,
+            all_processes,
+            linestyle="--",
+            label="Speedup ideal",
+        )
+        axes[0].set_xlabel("Número de processos")
+        axes[0].set_ylabel("Speedup")
+        axes[0].set_title("Speedup")
+        axes[0].set_xticks(all_processes)
+        axes[0].grid(True, alpha=0.3)
+        axes[0].legend(title="Tamanho da matriz")
+
+        axes[1].axhline(
+            1.0,
+            linestyle="--",
+            label="Eficiência ideal",
+        )
+        axes[1].set_xlabel("Número de processos")
+        axes[1].set_ylabel("Eficiência")
+        axes[1].set_title("Eficiência")
+        axes[1].set_xticks(all_processes)
+        axes[1].grid(True, alpha=0.3)
+        axes[1].legend(title="Tamanho da matriz")
+
+        fig.suptitle(title)
+        fig.tight_layout()
+        fig.savefig(output_path, dpi=300)
+        plt.close(fig)
+        return
+    
     processes = df["processes"].to_numpy()
     speedup = df["speedup"].to_numpy()
     efficiency = df["efficiency"].to_numpy()

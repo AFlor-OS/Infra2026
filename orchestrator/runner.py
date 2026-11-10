@@ -75,13 +75,22 @@ def build_command(
 
     mpiexec = os.environ.get("MPIEXEC", "mpirun")
 
-    return [
+
+    command = [
         mpiexec,
         "-np",
         str(processes),
         str(ROOT / "build" / "mpi_ring"),
         str(n),
     ]
+
+    # Este ambiente possui 12 núcleos físicos e 14 threads lógicas.
+    # A opção é necessária para executar P=14 sem oversubscription.
+    if processes == 14:
+        command.insert(1, "--use-hwthread-cpus")
+
+    return command
+
 
 
 def execute_command(command: list[str]) -> subprocess.CompletedProcess:

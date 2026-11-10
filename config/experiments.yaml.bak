@@ -1,0 +1,55 @@
+
+# Configurações gerais
+execution:
+  warmups: 1
+  pause_seconds: 2
+  random_seed: 2026
+
+statistics:
+  confidence_level: 0.95
+  pilot_repetitions: 3
+  default_repetitions: 10
+  saturation_repetitions: 5
+
+  adaptive:
+    enabled: false
+    relative_ci_half_width: 0.05
+    batch_size: 5
+    max_repetitions: 20
+
+  bootstrap:
+    enabled: false
+    samples: 10000
+    confidence_level: 0.95
+
+# Experimentos
+experiments:
+  strong:
+    enabled: false
+    scenario: E2
+    matrix_size: 4960
+    processes: [1, 2, 4, 8]
+    repetitions: 10
+
+  weak:
+    enabled: true
+    scenario: E3
+    base_matrix_size: 2048
+    processes: [1, 2, 4, 8]
+    matrix_sizes: [2048, 2584, 3248, 4096]
+    repetitions: 10
+
+  saturation:
+    enabled: false
+    scenario: E4
+    matrix_sizes: [512, 1024, 1536, 2048, 3072, 4096]
+    processes: [1, 2, 4, 8]
+    repetitions: 5
+    
+calibration:
+  target_min_seconds: 60
+  target_max_seconds: 120
+  target_seconds: 90
+  start_matrix_size: 4960
+  max_matrix_size: 6144
+  max_search_attempts: 8

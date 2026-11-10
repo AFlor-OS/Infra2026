@@ -14,6 +14,11 @@ campaigns = [
         "mode": "weak",
         "name": "E3",
     },
+    {
+        "id": "ba099ede-f9e4-4dd6-9787-cdffc40c5505",
+        "mode": "saturation",
+        "name": "E4",
+    },
 ]
 
 for campaign in campaigns:
